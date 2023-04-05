@@ -7,12 +7,12 @@ instance_types = {
   "broker"     = "t3.small"
   "bookkeeper" = "i3en.2xlarge"
   "zookeeper"  = "i3en.2xlarge"
-  "client"     = "t3.small"
-  "prometheus" = "t3.small"
+  "client"     = "r5.large"
+  "prometheus" = "r5.large"
 }
 
 num_instances = {
-  "client"     = 4
+  "client"     = 1
   "bookkeeper" = 3
   "broker"     = 3
   "zookeeper"  = 3
