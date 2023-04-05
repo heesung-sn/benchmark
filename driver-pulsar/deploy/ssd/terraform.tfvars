@@ -4,15 +4,17 @@ az              = "us-west-2a"
 ami             = "ami-08970fb2e5767e3b8" // RHEL-8
 
 instance_types = {
-  "pulsar"     = "i3en.6xlarge"
+  "broker"     = "t3.small"
+  "bookkeeper" = "i3en.2xlarge"
   "zookeeper"  = "i3en.2xlarge"
-  "client"     = "m5n.8xlarge"
-  "prometheus" = "t2.large"
+  "client"     = "t3.small"
+  "prometheus" = "t3.small"
 }
 
 num_instances = {
   "client"     = 4
-  "pulsar"     = 5
+  "bookkeeper" = 3
+  "broker"     = 3
   "zookeeper"  = 3
   "prometheus" = 1
 }

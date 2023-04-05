@@ -37,7 +37,7 @@
 # PULSAR_GLOBAL_ZK_CONF=
 
 # Extra options to be passed to the jvm
-PULSAR_MEM=${PULSAR_MEM:-" -Xms{{ max_heap_memory }} -Xmx{{ max_heap_memory }} -XX:MaxDirectMemorySize={{ max_direct_memory }}"}
+PULSAR_MEM=${PULSAR_MEM:-" -Xms{{ broker_max_heap_memory }} -Xmx{{ broker_max_heap_memory }} -XX:MaxDirectMemorySize={{ broker_max_direct_memory }}"}
 
 # Garbage collection options
 PULSAR_GC=${PULSAR_GC:-"-XX:+UseZGC -XX:+PerfDisableSharedMem -XX:+AlwaysPreTouch"}

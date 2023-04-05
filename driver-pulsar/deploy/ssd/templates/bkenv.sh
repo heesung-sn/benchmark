@@ -30,7 +30,7 @@ BOOKIE_CONF=${BOOKIE_CONF:-"$BK_HOME/conf/bookkeeper.conf"}
 BOOKIE_LOG_DIR=${BOOKIE_LOG_DIR:-"${PULSAR_LOG_DIR}"}
 
 # Memory size options
-BOOKIE_MEM=${BOOKIE_MEM:-${PULSAR_MEM:-"-Xms{{ max_heap_memory }} -Xmx{{ max_heap_memory }} -XX:MaxDirectMemorySize={{ max_direct_memory }}"}}
+BOOKIE_MEM=${BOOKIE_MEM:-${PULSAR_MEM:-"-Xms{{ bookkeeper_max_heap_memory }} -Xmx{{ bookkeeper_max_heap_memory }} -XX:MaxDirectMemorySize={{ bookkeeper_max_direct_memory }}"}}
 
 # Garbage collection options
 BOOKIE_GC=${BOOKIE_GC:-${PULSAR_GC:-"-XX:+UseZGC -XX:+PerfDisableSharedMem -XX:+AlwaysPreTouch"}}

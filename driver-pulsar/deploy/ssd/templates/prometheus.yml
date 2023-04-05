@@ -40,7 +40,7 @@ scrape_configs:
     honor_labels: true # don't overwrite job & instance labels
     static_configs:
       - targets:
-{% for broker in groups['pulsar'] %}
+{% for broker in groups['broker'] %}
           - {{ hostvars[broker].private_ip }}:8080
 {% endfor %}
 
@@ -48,7 +48,7 @@ scrape_configs:
     honor_labels: true # don't overwrite job & instance labels
     static_configs:
       - targets:
-{% for broker in groups['pulsar'] %}
+{% for broker in groups['bookkeeper'] %}
           - {{ hostvars[broker].private_ip }}:8000
 {% endfor %}
 
@@ -64,6 +64,6 @@ scrape_configs:
     honor_labels: true # don't overwrite job & instance labels
     static_configs:
       - targets:
-{% for broker in groups['pulsar'] %}
+{% for broker in groups['broker'] %}
           - {{ hostvars[broker].private_ip }}:9100
 {% endfor %}

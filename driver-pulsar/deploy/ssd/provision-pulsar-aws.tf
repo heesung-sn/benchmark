@@ -50,7 +50,7 @@ resource "aws_vpc" "benchmark_vpc" {
 }
 
 # Create an internet gateway to give our subnet access to the outside world
-resource "aws_internet_gateway" "pulsar" {
+resource "aws_internet_gateway" "broker" {
   vpc_id = aws_vpc.benchmark_vpc.id
 }
 
@@ -58,7 +58,7 @@ resource "aws_internet_gateway" "pulsar" {
 resource "aws_route" "internet_access" {
   route_table_id         = aws_vpc.benchmark_vpc.main_route_table_id
   destination_cidr_block = "0.0.0.0/0"
-  gateway_id             = aws_internet_gateway.pulsar.id
+  gateway_id             = aws_internet_gateway.broker.id
 }
 
 # Create a subnet to launch our instances into
@@ -135,17 +135,31 @@ resource "aws_instance" "zookeeper" {
   }
 }
 
-resource "aws_instance" "pulsar" {
+resource "aws_instance" "broker" {
   ami           = var.ami
-  instance_type = var.instance_types["pulsar"]
+  instance_type = var.instance_types["broker"]
   key_name      = aws_key_pair.auth.id
   subnet_id     = aws_subnet.benchmark_subnet.id
   vpc_security_group_ids = [
   aws_security_group.benchmark_security_group.id]
-  count = var.num_instances["pulsar"]
+  count = var.num_instances["broker"]
 
   tags = {
-    Name = "pulsar-${count.index}"
+    Name = "broker-${count.index}"
+  }
+}
+
+resource "aws_instance" "bookkeeper" {
+  ami           = var.ami
+  instance_type = var.instance_types["bookkeeper"]
+  key_name      = aws_key_pair.auth.id
+  subnet_id     = aws_subnet.benchmark_subnet.id
+  vpc_security_group_ids = [
+  aws_security_group.benchmark_security_group.id]
+  count = var.num_instances["bookkeeper"]
+
+  tags = {
+    Name = "bookkeeper-${count.index}"
   }
 }
 
@@ -184,9 +198,16 @@ output "zookeeper" {
   }
 }
 
-output "pulsar" {
+output "broker" {
   value = {
-    for instance in aws_instance.pulsar :
+    for instance in aws_instance.broker :
+    instance.public_ip => instance.private_ip
+  }
+}
+
+output "bookkeeper" {
+  value = {
+    for instance in aws_instance.bookkeeper :
     instance.public_ip => instance.private_ip
   }
 }

@@ -19,8 +19,8 @@ driverClass: io.openmessaging.benchmark.driver.pulsar.PulsarBenchmarkDriver
 client:
   serviceUrl: pulsar://localhost:6650
   httpUrl: http://localhost:8080
-  ioThreads: 16
-  connectionsPerBroker: 8
+  ioThreads: 4
+  connectionsPerBroker: 2
   clusterName: local
   namespacePrefix: benchmark/ns
   topicType: persistent

@@ -20,8 +20,8 @@
         private_ip: "{{ hostvars[inventory_hostname]['ansible_default_ipv4']['address'] }}"
     - set_fact:
         zookeeperServers: "{{ groups['zookeeper'] | map('extract', hostvars, ['ansible_default_ipv4', 'address']) | map('regex_replace', '^(.*)$', '\\1:2181') | join(',') }}"
-        serviceUrl: "pulsar://{{ hostvars[groups['pulsar'][0]].private_ip }}:6650/"
-        httpUrl: "http://{{ hostvars[groups['pulsar'][0]].private_ip }}:8080/"
+        serviceUrl: "pulsar://{{ hostvars[groups['broker'][0]].private_ip }}:6650/"
+        httpUrl: "http://{{ hostvars[groups['broker'][0]].private_ip }}:8080/"
     - set_fact:
         pulsar_version: "{{ pulsar_version | default('2.11.0') }}"
         node_exporter_version: "{{ node_exporter_version | default('1.2.2') }}"
@@ -66,8 +66,8 @@
         - { path: "/mnt/zookeeper/logs", src: "{{ disk_dev[0] }}" }
         - { path: "/mnt/zookeeper/data", src: "{{ disk_dev[1] }}" }
 
-- name: Format and mount disks for Pulsar/BookKeeper hosts
-  hosts: pulsar
+- name: Format and mount disks for BookKeeper hosts
+  hosts: bookkeeper
   connection: ssh
   become: true
   tasks:
@@ -90,7 +90,7 @@
         - { path: "/mnt/storage", src: "{{ disk_dev[1] }}" }
 
 - name: Install Node exporter on Brokers to collect system metrics
-  hosts: pulsar
+  hosts: broker
   become: true
   tasks:
     - name: Add user node_exporter
@@ -148,7 +148,7 @@
         timeout: 5
 
 - name: Pulsar installation
-  hosts: pulsar:client:zookeeper
+  hosts: broker:bookkeeper:client:zookeeper
   connection: ssh
   become: true
   tasks:
@@ -243,7 +243,7 @@
         name: "zookeeper"
 
 - name: BookKeeper setup
-  hosts: pulsar
+  hosts: bookkeeper
   connection: ssh
   become: true
   tasks:
@@ -255,7 +255,7 @@
         --broker-service-url {{ serviceUrl }}
       args:
         chdir: /opt/pulsar
-      when: groups['pulsar'][0] == inventory_hostname
+      when: groups['bookkeeper'][0] == inventory_hostname
     - set_fact:
         skip_journal: "{{ skip_journal | default(false) }}"
     - name: Apply BookKeeper configuration file [Bypass Journal]
@@ -278,7 +278,7 @@
         name: "bookkeeper"
 
 - name: Pulsar configuration and systemd setup
-  hosts: pulsar
+  hosts: broker
   connection: ssh
   become: true
   tasks:
@@ -504,8 +504,11 @@
         msg: "Zookeeper servers {{ item }}"
       with_items: "{{ groups['zookeeper'] }}"
     - debug:
-        msg: "Pulsar/BookKeeper servers {{ item }}"
-      with_items: "{{ groups['pulsar'] }}"
+        msg: "Broker servers {{ item }}"
+      with_items: "{{ groups['broker'] }}"
+    - debug:
+        msg: "BookKeeper servers {{ item }}"
+      with_items: "{{ groups['bookkeeper'] }}"
     - debug:
         msg: "Benchmark clients {{ item }}"
       with_items: "{{ groups['client'] }}"
