@@ -49,12 +49,12 @@ disk_dev:
   - /dev/nvme2n1
 
 # Each item represents a protocol handler. If `local_path` is defined, the NAR file will be uploaded from local path instead of downloading from `url`.
-protocol_handlers:
-  - protocol: kafka
-    conf: kop.conf
-    url: https://github.com/streamnative/kop/releases/download/v2.9.2.5/pulsar-protocol-handler-kafka-2.9.2.5.nar
+#protocol_handlers:
+#  - protocol: kafka
+#    conf: kop.conf
+#    url: https://github.com/streamnative/kop/releases/download/v2.9.2.5/pulsar-protocol-handler-kafka-2.9.2.5.nar
     #local_path: ./pulsar-protocol-handler-kafka-2.9.2.5.nar
-  - protocol: mqtt
-    conf: mop.conf
-    url: https://github.com/streamnative/mop/releases/download/v2.9.2.5/pulsar-protocol-handler-mqtt-2.9.2.5.nar
+#  - protocol: mqtt
+#    conf: mop.conf
+#    url: https://github.com/streamnative/mop/releases/download/v2.9.2.5/pulsar-protocol-handler-mqtt-2.9.2.5.nar
     #local_path: ./pulsar-protocol-handler-mqtt-2.9.2.5.nar
