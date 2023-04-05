@@ -412,25 +412,6 @@
          replace: '{{ httpUrl }}'
       with_items: '{{ jms_drivers_list.stdout_lines }}'
 
-    - name: Configure memory
-      lineinfile:
-         dest: /opt/benchmark/bin/benchmark-worker
-         regexp: '^JVM_MEM='
-         line: 'JVM_MEM="-Xms64G -Xmx64G -XX:+UseZGC"'
-    - name: Configure memory
-      lineinfile:
-         dest: /opt/benchmark/bin/benchmark
-         regexp: '^JVM_MEM='
-         line: 'JVM_MEM="-Xmx16G"'
-    - name: Install benchmark systemd service
-      template:
-        src: "templates/benchmark-worker.service"
-        dest: "/etc/systemd/system/benchmark-worker.service"
-    - systemd:
-        state: restarted
-        daemon_reload: yes
-        name: "benchmark-worker"
-
 - name: Prometheus installation
   hosts: prometheus
   connection: ssh
