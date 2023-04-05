@@ -31,9 +31,9 @@ skip_journal: false
 # By default, ansible downloads binaries from network. The download URL is determined automatically by the version.
 # To specific another URL to download, you should configure `remote` with `yes` and `src` with the new URL.
 # To upload local binaries, you should configure `remote` with `no` and `src` with the local path.
-#pulsar_binary:
-#  src: ./apache-pulsar-2.9.1-bin.tar.gz
-#  remote: no
+pulsar_binary:
+  src: ./apache-pulsar-3.0.0-SNAPSHOT-bin.tar.gz
+  remote: no
 #
 #node_exporter_binary:
 #  src: ./node_exporter-1.2.2.linux-amd64.tar.gz
