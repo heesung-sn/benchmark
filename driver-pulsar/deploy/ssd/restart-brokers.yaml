@@ -42,38 +42,6 @@
       template:
         src: templates/broker.conf
         dest: /opt/pulsar/conf/broker.conf
-    - name: Set up configurations of protocol handlers
-      template:
-        src: "templates/{{ item.conf }}"
-        dest: "/opt/pulsar/conf/{{ item.conf }}"
-      loop: "{{ protocol_handlers }}"
-      when: protocol_handlers is defined
-    - set_fact:
-        protocols: "{{ protocols | default([]) + [ item.protocol ] }}"
-      loop: "{{ protocol_handlers }}"
-      when: protocol_handlers is defined
-    - name: Enable protocol handlers
-      lineinfile:
-        path: /opt/pulsar/conf/broker.conf
-        line: "messagingProtocols={{ protocols | join(',') }}"
-    - name: Read configurations of all protocol handlers
-      shell: |
-        grep -v "^#" "{{ '/opt/pulsar/conf/' + item.conf }}"
-      loop: "{{ protocol_handlers }}"
-      when: protocol_handlers is defined
-      register: conf_files
-    - name: Read configurations of all protocol handlers
-      shell: |
-        grep -v "^#" "{{ '/opt/pulsar/conf/' + item.conf }}"
-      loop: "{{ protocol_handlers }}"
-      when: protocol_handlers is defined
-      register: conf_files
-    - name: Update broker.conf for protocol handlers
-      lineinfile:
-        path: /opt/pulsar/conf/broker.conf
-        line: "{{ item.stdout_lines | join('\n') }}"
-      loop: "{{ conf_files.results }}"
-      when: conf_files is defined
     - systemd:
         state: started
         daemon_reload: yes
