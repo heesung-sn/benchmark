@@ -21,12 +21,12 @@
         zookeeperServers: "{{ groups['zookeeper'] | map('extract', hostvars, ['ansible_default_ipv4', 'address']) | map('regex_replace', '^(.*)$', '\\1:2181') | join(',') }}"
 
 - name: Restart brokers with new configurations
-  hosts: pulsar
+  hosts: broker
   become: true
   tasks:
     - set_fact:
-        max_heap_memory: "{{ pulsar_max_heap_memory | default('16g') }}"
-        max_direct_memory: "{{ pulsar_max_direct_memory | default('48g') }}"
+        max_heap_memory: "{{ broker_max_heap_memory | default('16g') }}"
+        max_direct_memory: "{{ broker_max_direct_memory | default('48g') }}"
     - systemd:
         state: stopped
         name: pulsar
