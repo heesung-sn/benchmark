@@ -70,9 +70,10 @@ resource "aws_subnet" "benchmark_subnet" {
 }
 
 resource "aws_lb" "benchmark_lb" {
+  name   = "terraform-pulsar-${random_id.hash.hex}"
   internal           = true
   load_balancer_type = "network"
-  subnets            = [for subnet in aws_subnet.public : subnet.id]
+  subnets            = [for subnet in aws_subnet.benchmark_subnet : subnet.id]
 
   tags = {
     Name = "Pulsar-Benchmark-VPC-${random_id.hash.hex}"
