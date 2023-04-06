@@ -154,8 +154,6 @@
   tasks:
     - name: Set performance profile
       command: tuned-adm profile latency-performance
-    - file: path=/opt/pulsar state=absent
-    - file: path=/opt/pulsar state=directory
     - set_fact:
         max_heap_memory: "{{ pulsar_max_heap_memory | default('32g') }}"
         max_direct_memory: "{{ pulsar_max_direct_memory | default('32g') }}"
@@ -435,8 +433,6 @@
   connection: ssh
   become: true
   tasks:
-    - file: path=/opt/pulsar state=absent
-    - file: path=/opt/pulsar state=directory
     - file:
         path: "/opt/prometheus/{{ item }}"
         state: directory
