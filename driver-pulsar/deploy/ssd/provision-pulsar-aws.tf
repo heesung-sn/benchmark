@@ -69,16 +69,6 @@ resource "aws_subnet" "benchmark_subnet" {
   availability_zone       = var.az
 }
 
-resource "aws_lb" "benchmark_lb" {
-  name   = "terraform-pulsar-${random_id.hash.hex}"
-  internal           = true
-  load_balancer_type = "network"
-  subnets            = [for subnet in aws_subnet.benchmark_subnet : subnet.id]
-
-  tags = {
-    Name = "Pulsar-Benchmark-VPC-${random_id.hash.hex}"
-  }
-}
 
 resource "aws_security_group" "benchmark_security_group" {
   name   = "terraform-pulsar-${random_id.hash.hex}"
