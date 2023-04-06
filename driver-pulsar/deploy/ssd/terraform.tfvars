@@ -1,7 +1,7 @@
 public_key_path = "~/.ssh/pulsar_aws.pub"
 region          = "us-west-2"
 az              = "us-west-2a"
-ami             = "ami-08970fb2e5767e3b8" // RHEL-8
+ami             = "ami-080653be0009db65d" // RHEL-8
 
 instance_types = {
   "broker"     = "t3.small"
