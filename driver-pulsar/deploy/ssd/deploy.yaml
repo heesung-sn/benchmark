@@ -93,27 +93,6 @@
   hosts: broker
   become: true
   tasks:
-    - name: Add user node_exporter
-      user:
-        name: node_exporter
-        shell: /bin/false
-        system: true
-        create_home: no
-    - name: Download and extract
-      unarchive:
-        src: "{{ node_exporter_binary.src }}"
-        dest: /tmp
-        remote_src: "{{ node_exporter_binary.remote }}"
-
-    - name: Copy bin node_exporter to /usr/local/bin
-      copy:
-        src: "/tmp/node_exporter-{{ node_exporter_version }}.linux-amd64/node_exporter"
-        remote_src: yes
-        dest: /usr/local/bin/
-        owner: node_exporter
-        group: node_exporter
-        mode: u+x,g+x,o+x
-
     - name: Create service node_exporter.service
       blockinfile:
         path: /etc/systemd/system/node_exporter.service
